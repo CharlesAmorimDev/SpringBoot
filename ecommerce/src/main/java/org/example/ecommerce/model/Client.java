@@ -1,5 +1,7 @@
 package org.example.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -22,7 +24,7 @@ public class Client {
 
     @Column(name = "age")
     private Integer age;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     private Set<ClientOrder> order;
 
