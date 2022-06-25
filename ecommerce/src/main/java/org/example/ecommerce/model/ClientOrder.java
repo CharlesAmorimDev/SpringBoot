@@ -1,21 +1,30 @@
 package org.example.ecommerce.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
-
+@Entity
+@Table(name = "client_order")
 public class ClientOrder {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id")
     private Client client;
+
+    @Column(name = "date_order")
     private LocalDate dateorder;
+
+    @Column(name = "total",precision = 20, scale = 2)
     private BigDecimal total;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderItems> items;
 
     public Integer getId() {
         return id;
@@ -47,5 +56,10 @@ public class ClientOrder {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    @Override
+    public String toString() {
+        return "Order id: " + id + ", Date order: " + dateorder + ", Total: R$ " + total;
     }
 }

@@ -1,18 +1,23 @@
 package org.example.ecommerce.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-
+@Entity
+@Table(name = "order_items")
 public class OrderItems {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "client_order_id")
     private ClientOrder order;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
+
     private Integer amount;
 
     public Integer getId() {

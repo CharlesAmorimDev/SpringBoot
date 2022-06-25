@@ -1,13 +1,11 @@
 package org.example.ecommerce.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
+@Table(name = "client")
 public class Client {
-
     public Client() { }
 
     public Client(String name, Integer age) {
@@ -15,17 +13,26 @@ public class Client {
         this.age = age;
     }
 
-    public Client(Integer id, String name, Integer age) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "age")
+    private Integer age;
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    private Set<ClientOrder> order;
+
+    public Set<ClientOrder> getOrder() {
+        return order;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    private String name;
-    private Integer age;
+    public void setOrder(Set<ClientOrder> order) {
+        this.order = order;
+    }
 
     public Integer getAge() {
         return age;
@@ -54,5 +61,6 @@ public class Client {
     @Override
     public String toString() {
         return "Name: " + name + " - Age: " + age + " - ID = " + id;
+
     }
 }
