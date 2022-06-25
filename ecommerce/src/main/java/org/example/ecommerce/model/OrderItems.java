@@ -1,17 +1,30 @@
 package org.example.ecommerce.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "order_items")
 public class OrderItems {
 
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "client_order_id")
     private ClientOrder order;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
+
     private Integer amount;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
