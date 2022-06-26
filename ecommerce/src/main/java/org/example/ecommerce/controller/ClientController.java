@@ -6,61 +6,55 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
 
     @Autowired
-    ClientRepository clientRepository;
+    ClientRepository repository;
 
-    @GetMapping("/id/{id}")
-    public ResponseEntity getById(@PathVariable Integer id) {
-        Optional<Client> client = clientRepository.findById(id);
-        if (client.isPresent()) {
-            return ResponseEntity.ok(client.get());
-        }
-        return ResponseEntity.notFound().build();
+    @GetMapping("{id}")
+    public Client getById(@PathVariable Integer id) {
+        return repository.findById(id)
+                               .orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não Localizado"));
     }
 
-    @GetMapping("/all")
-    public ResponseEntity getAll(Client filter) {
-        ExampleMatcher matcher = ExampleMatcher
-                .matching()
-                .withIgnoreCase()
-                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+    @GetMapping
+    public List<Client> getAllByFilter(Client filter) {
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                                               .withIgnoreCase()
+                                               .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
         Example example = Example.of(filter, matcher);
-        List<Client> clients = clientRepository.findAll(example);
-        return ResponseEntity.ok(clients);
+        return repository.findAll(example);
     }
 
     @PostMapping
-    public ResponseEntity register(@RequestBody Client client) {
-        return ResponseEntity.ok(clientRepository.save(client));
+    @ResponseStatus(HttpStatus.CREATED)
+    public Client register(@RequestBody Client client) {
+        return repository.save(client);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable Integer id, @RequestBody Client client) {
-        return clientRepository.findById(id).map(clientExists -> {
-            client.setId(clientExists.getId());
-            clientRepository.save(client);
-            return ResponseEntity.noContent().build();
-        }).orElseGet( () -> ResponseEntity.notFound().build());
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable Integer id, @RequestBody Client update) {
+        repository.findById(id)
+                .map(client -> {
+                    update.setId(client.getId());
+                    repository.save(update);
+                    return client;
+                }).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não Localizado"));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable Integer id) {
-        Optional<Client> client = clientRepository.findById(id);
-        if(client.isPresent()) {
-            clientRepository.delete(client.get());
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Integer id) {
+        repository.findById(id).map(client -> { repository.delete(client);
+                                        return client;
+                                     }).orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não Localizado"));
     }
 }
