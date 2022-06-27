@@ -1,7 +1,7 @@
 package org.example.ecommerce.controller;
 
-import org.example.ecommerce.model.Client;
-import org.example.ecommerce.repository.ClientRepository;
+import org.example.ecommerce.model.Customer;
+import org.example.ecommerce.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -12,20 +12,20 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/clients")
-public class ClientController {
+@RequestMapping("/customers")
+public class CustomerController {
 
     @Autowired
-    ClientRepository repository;
+    CustomerRepository repository;
 
     @GetMapping("{id}")
-    public Client getById(@PathVariable Integer id) {
+    public Customer getById(@PathVariable Integer id) {
         return repository.findById(id)
-                               .orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não Localizado"));
+                               .orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
     }
 
     @GetMapping
-    public List<Client> getAllByFilter(Client filter) {
+    public List<Customer> getAllByFilter(Customer filter) {
         ExampleMatcher matcher = ExampleMatcher.matching()
                                                .withIgnoreCase()
                                                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
@@ -35,19 +35,19 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Client register(@RequestBody Client client) {
-        return repository.save(client);
+    public Customer register(@RequestBody Customer customer) {
+        return repository.save(customer);
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable Integer id, @RequestBody Client update) {
+    public void update(@PathVariable Integer id, @RequestBody Customer update) {
         repository.findById(id)
                 .map(client -> {
                     update.setId(client.getId());
                     repository.save(update);
                     return client;
-                }).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não Localizado"));
+                }).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
     }
 
     @DeleteMapping("{id}")
@@ -55,6 +55,6 @@ public class ClientController {
     public void delete(@PathVariable Integer id) {
         repository.findById(id).map(client -> { repository.delete(client);
                                         return client;
-                                     }).orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não Localizado"));
+                                     }).orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
     }
 }

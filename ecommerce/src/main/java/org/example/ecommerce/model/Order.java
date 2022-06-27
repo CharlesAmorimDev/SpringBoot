@@ -6,16 +6,16 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "client_order")
-public class ClientOrder {
+@Table(name = "customer_order")
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @Column(name = "date_order")
     private LocalDate dateorder;
@@ -24,7 +24,7 @@ public class ClientOrder {
     private BigDecimal total;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderItems> items;
+    private List<OrderDetails> items;
 
     public Integer getId() {
         return id;
@@ -34,12 +34,12 @@ public class ClientOrder {
         this.id = id;
     }
 
-    public Client getClient() {
-        return client;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public LocalDate getDateorder() {
@@ -56,6 +56,14 @@ public class ClientOrder {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    public List<OrderDetails> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderDetails> items) {
+        this.items = items;
     }
 
     @Override

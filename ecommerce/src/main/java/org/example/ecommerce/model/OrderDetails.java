@@ -3,16 +3,16 @@ package org.example.ecommerce.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "order_items")
-public class OrderItems {
+@Table(name = "order_details")
+public class OrderDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "client_order_id")
-    private ClientOrder order;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -28,11 +28,11 @@ public class OrderItems {
         this.id = id;
     }
 
-    public ClientOrder getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(ClientOrder order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

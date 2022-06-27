@@ -1,7 +1,7 @@
 package org.example.ecommerce;
 
-import org.example.ecommerce.model.Client;
-import org.example.ecommerce.repository.ClientRepository;
+import org.example.ecommerce.model.Customer;
+import org.example.ecommerce.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,10 +13,10 @@ public class EcommerceApplication {
 
     @Bean
     public CommandLineRunner execute(
-            @Autowired ClientRepository clientRepository) {
+            @Autowired CustomerRepository customerRepository) {
         return args -> {
-            Client client = new Client("Charles", 22);
-            clientRepository.save(client);
+            Customer customer = new Customer("Charles", 22);
+            customerRepository.save(customer);
         };
     }
 

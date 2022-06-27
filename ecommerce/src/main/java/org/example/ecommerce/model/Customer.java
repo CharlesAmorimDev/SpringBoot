@@ -6,11 +6,11 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "client")
-public class Client {
-    public Client() { }
+@Table(name = "customer")
+public class Customer {
+    public Customer() { }
 
-    public Client(String name, Integer age) {
+    public Customer(String name, Integer age) {
         this.name = name;
         this.age = age;
     }
@@ -25,14 +25,14 @@ public class Client {
     @Column(name = "age")
     private Integer age;
     @JsonIgnore
-    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
-    private Set<ClientOrder> order;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private Set<Order> order;
 
-    public Set<ClientOrder> getOrder() {
+    public Set<Order> getOrder() {
         return order;
     }
 
-    public void setOrder(Set<ClientOrder> order) {
+    public void setOrder(Set<Order> order) {
         this.order = order;
     }
 
