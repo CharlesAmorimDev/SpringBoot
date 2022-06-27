@@ -1,5 +1,7 @@
 package org.example.ecommerce.model;
 
+import org.example.ecommerce.enums.OrderStatus;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,6 +27,16 @@ public class Order {
 
     @OneToMany(mappedBy = "order")
     private List<OrderDetails> items;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
 
     public Integer getId() {
         return id;

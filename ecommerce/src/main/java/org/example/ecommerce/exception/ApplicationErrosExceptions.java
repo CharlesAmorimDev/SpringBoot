@@ -1,4 +1,4 @@
-package org.example.ecommerce;
+package org.example.ecommerce.exception;
 
 import java.util.Arrays;
 import java.util.List;
