@@ -12,9 +12,9 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotEmpty(message = "É obrigatório informar o nome do produto")
+    @NotEmpty(message = "{product.name-empty}")
     private String name;
-    @NotNull(message = "É obrigatório informar o preço do produto")
+    @NotNull(message = "{product.price-null}")
     @Column(name = "price",precision = 20, scale = 2)
     private BigDecimal price;
 

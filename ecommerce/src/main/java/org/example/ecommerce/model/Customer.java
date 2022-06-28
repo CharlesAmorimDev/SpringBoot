@@ -25,14 +25,15 @@ public class Customer {
     private Integer id;
 
     @Column(name = "name")
-    @NotEmpty(message = "É obrigatório preenche o Nome do cliente")
+    @NotEmpty(message = "{customer.name-empty}")
     private String name;
 
-    @NotEmpty(message = "É obrigatório preencher o CPF do cliente")
+    @NotEmpty(message = "{customer.cpf-null}")
     @CPF(message = "CPF Inválido")
     private String cpf;
 
     private Integer age;
+
     @JsonIgnore
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
    // @NotEmptyList

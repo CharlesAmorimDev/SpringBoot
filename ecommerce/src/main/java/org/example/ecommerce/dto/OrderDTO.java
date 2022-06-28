@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class OrderDTO {
-    @NotNull(message = "É obrigatório informar o cliente")
+    @NotNull(message = "{orderdto.customer-null}")
     private Integer customer;
-    @NotEmptyList(message = "O carrinho de comprar está vazio")
+    @NotEmptyList(message = "{orderdto.list-items-empty}")
     private List<OrderDetailsDTO> items;
     private BigDecimal total;
 
