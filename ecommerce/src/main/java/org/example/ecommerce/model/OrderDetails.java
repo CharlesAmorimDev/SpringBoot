@@ -1,6 +1,7 @@
 package org.example.ecommerce.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "order_details")

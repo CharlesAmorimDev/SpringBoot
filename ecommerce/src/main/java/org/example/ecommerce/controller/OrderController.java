@@ -3,13 +3,13 @@ package org.example.ecommerce.controller;
 import org.example.ecommerce.dto.NewStatusDTO;
 import org.example.ecommerce.dto.OrderDTO;
 import org.example.ecommerce.dto.OrderInformationsDTO;
-import org.example.ecommerce.enums.OrderStatus;
 import org.example.ecommerce.model.Order;
 import org.example.ecommerce.service.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -26,7 +26,7 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer register(@RequestBody OrderDTO orderDTO) {
+    public Integer register(@RequestBody @Valid OrderDTO orderDTO) {
         Order order = service.generateOrder(orderDTO);
         return order.getId();
     }

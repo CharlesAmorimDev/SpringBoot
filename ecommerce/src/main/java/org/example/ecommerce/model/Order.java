@@ -14,18 +14,15 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-
     @Column(name = "date_order")
     private LocalDate dateorder;
-
     @Column(name = "total",precision = 20, scale = 2)
     private BigDecimal total;
-
     @OneToMany(mappedBy = "order")
+   // @NotEmptyList
     private List<OrderDetails> items;
     @Enumerated(EnumType.STRING)
     private OrderStatus status;

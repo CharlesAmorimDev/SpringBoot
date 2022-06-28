@@ -1,17 +1,22 @@
 package org.example.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Entity
 @Table(name = "customer")
 public class Customer {
-    public Customer() { }
 
-    public Customer(String name, Integer age) {
+    public Customer() {
+    }
+
+    public Customer(String name, String cpf, Integer age) {
         this.name = name;
+        this.cpf = cpf;
         this.age = age;
     }
 
@@ -20,12 +25,17 @@ public class Customer {
     private Integer id;
 
     @Column(name = "name")
+    @NotEmpty(message = "É obrigatório preenche o Nome do cliente")
     private String name;
 
-    @Column(name = "age")
+    @NotEmpty(message = "É obrigatório preencher o CPF do cliente")
+    @CPF(message = "CPF Inválido")
+    private String cpf;
+
     private Integer age;
     @JsonIgnore
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+   // @NotEmptyList
     private Set<Order> order;
 
     public Set<Order> getOrder() {
@@ -58,6 +68,14 @@ public class Customer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     @Override

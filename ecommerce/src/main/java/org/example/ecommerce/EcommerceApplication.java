@@ -15,7 +15,7 @@ public class EcommerceApplication {
     public CommandLineRunner execute(
             @Autowired CustomerRepository customerRepository) {
         return args -> {
-            Customer customer = new Customer("Charles", 22);
+            Customer customer = new Customer("Charles", "80682038938" ,22);
             customerRepository.save(customer);
         };
     }

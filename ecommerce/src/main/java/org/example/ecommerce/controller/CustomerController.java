@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,13 +36,13 @@ public class CustomerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Customer register(@RequestBody Customer customer) {
+    public Customer register(@RequestBody @Valid Customer customer) {
         return repository.save(customer);
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable Integer id, @RequestBody Customer update) {
+    public void update(@PathVariable Integer id, @RequestBody @Valid Customer update) {
         repository.findById(id)
                 .map(client -> {
                     update.setId(client.getId());
@@ -52,7 +53,7 @@ public class CustomerController {
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable @Valid Integer id) {
         repository.findById(id).map(client -> { repository.delete(client);
                                         return client;
                                      }).orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));

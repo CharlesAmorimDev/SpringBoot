@@ -1,6 +1,8 @@
 package org.example.ecommerce.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Entity
@@ -10,9 +12,9 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    @NotEmpty(message = "É obrigatório informar o nome do produto")
     private String name;
-
+    @NotNull(message = "É obrigatório informar o preço do produto")
     @Column(name = "price",precision = 20, scale = 2)
     private BigDecimal price;
 
