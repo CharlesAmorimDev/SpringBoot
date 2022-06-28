@@ -1,15 +1,14 @@
 package org.example.ecommerce.controller;
 
+import org.example.ecommerce.dto.NewStatusDTO;
 import org.example.ecommerce.dto.OrderDTO;
 import org.example.ecommerce.dto.OrderInformationsDTO;
+import org.example.ecommerce.enums.OrderStatus;
 import org.example.ecommerce.model.Order;
-import org.example.ecommerce.repository.OrderRepository;
 import org.example.ecommerce.service.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -19,12 +18,10 @@ public class OrderController {
 
     @Autowired
     OrderServiceImpl service;
-    @Autowired
-    OrderRepository repository;
 
-    @GetMapping("{orderID}")
-    public Optional<OrderInformationsDTO> orderInformations(@PathVariable Integer orderID) {
-        return service.orderInformations(orderID);
+    @GetMapping("{id}")
+    public Optional<OrderInformationsDTO> orderInformations(@PathVariable Integer id) {
+        return service.orderInformations(id);
     }
 
     @PostMapping
@@ -32,6 +29,14 @@ public class OrderController {
     public Integer register(@RequestBody OrderDTO orderDTO) {
         Order order = service.generateOrder(orderDTO);
         return order.getId();
+    }
+
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateOrderStatus(@PathVariable Integer id, @RequestBody NewStatusDTO newStatus) {
+        String update = newStatus.getNewStatus();
+        service.updateStatus(id, update);
+
     }
 
 }

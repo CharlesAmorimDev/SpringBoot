@@ -1,9 +1,6 @@
 package org.example.ecommerce.dto;
 
-import org.example.ecommerce.model.OrderDetails;
-
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 

@@ -1,11 +1,9 @@
 package org.example.ecommerce.service;
 
-import org.example.ecommerce.dto.OrderDTO;
-import org.example.ecommerce.dto.OrderDetailsDTO;
-import org.example.ecommerce.dto.OrderDetailsInformationsDTO;
-import org.example.ecommerce.dto.OrderInformationsDTO;
+import org.example.ecommerce.dto.*;
 import org.example.ecommerce.enums.OrderStatus;
 import org.example.ecommerce.exception.BusinessRuleException;
+import org.example.ecommerce.exception.OrderNotFoundException;
 import org.example.ecommerce.model.Customer;
 import org.example.ecommerce.model.Order;
 import org.example.ecommerce.model.OrderDetails;
@@ -15,15 +13,12 @@ import org.example.ecommerce.repository.OrderDetailsRepository;
 import org.example.ecommerce.repository.OrderRepository;
 import org.example.ecommerce.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +35,7 @@ public class OrderServiceImpl implements OrderService {
     OrderRepository orderRepository;
     @Autowired
     OrderDetailsRepository orderDetailsRepository;
+
 
     @Override
     @Transactional
@@ -64,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<OrderInformationsDTO> orderInformations(Integer orderID) {
         Order order = orderRepository.findByIdFetchItems(orderID)
-                .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Pedido não encontrado"));
+                .orElseThrow( () -> new BusinessRuleException("Pedido não encontrado"));
 
         OrderInformationsDTO orderInformations = new OrderInformationsDTO();
         orderInformations.setNumber(order.getId());
@@ -75,6 +71,22 @@ public class OrderServiceImpl implements OrderService {
         orderInformations.setStatus(order.getStatus().name());
         return Optional.of(orderInformations);
     }
+
+    @Override
+    public void updateStatus(Integer orderID, String newStatus) {
+        orderRepository.findById(orderID)
+                .map(order -> {
+                    order.setStatus(OrderStatus.valueOf(newStatus));
+                    return orderRepository.save(order);
+                }).orElseThrow( () -> new OrderNotFoundException());
+    }
+
+
+
+
+
+
+
 
     private List<OrderDetailsInformationsDTO> itemsInformations(List<OrderDetails> orderDetails) {
         if(CollectionUtils.isEmpty(orderDetails)) {
@@ -89,12 +101,10 @@ public class OrderServiceImpl implements OrderService {
                     return itemsInformations;
                 }).collect(Collectors.toList());
     }
-
     private Customer verifyCustomer(Integer customerID) {
         return customerRepository.findById(customerID)
                 .orElseThrow( ()-> new BusinessRuleException("Código do cliente inválido"));
     }       //Verifica se o cliente existe na base de dados
-
     private List<OrderDetails> verifyItems(Order order, List<OrderDetailsDTO> itemsDTO) {
         if(itemsDTO.isEmpty()){
             throw new BusinessRuleException("A sacola está vazia");
