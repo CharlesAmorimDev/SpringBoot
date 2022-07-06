@@ -19,10 +19,10 @@ public class ProductController {
     @Autowired
     ProductRepository repository;
 
-    @GetMapping("{id}")
-    public Product getById(@PathVariable Integer id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Product register(@RequestBody @Valid Product product) {
+        return repository.save(product);
     }
 
     @GetMapping
@@ -35,15 +35,15 @@ public class ProductController {
         return repository.findAll(example);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Product register(@RequestBody @Valid Product product) {
-        return repository.save(product);
+    @GetMapping("{id}")
+    public Product getById(@PathVariable Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable Integer id, @RequestBody @Valid Product update) {
+    public void update(@PathVariable Long id, @RequestBody @Valid Product update) {
         repository.findById(id)
                 .map(product -> {
                     update.setId(product.getId());
@@ -54,14 +54,12 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable Long id) {
         repository.findById(id)
                 .map(product -> {
                     repository.delete(product);
                     return product;
                 }).orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Produto não encontrado"));
     }
+
 }
-
-
-

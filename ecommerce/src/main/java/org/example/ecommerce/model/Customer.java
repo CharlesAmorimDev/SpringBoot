@@ -11,56 +11,74 @@ import java.util.Set;
 @Table(name = "customer")
 public class Customer {
 
-    public Customer() {
-    }
-
-    public Customer(String name, String cpf, Integer age) {
-        this.name = name;
-        this.cpf = cpf;
-        this.age = age;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
+
+    @Column
+    @NotEmpty(message = "{customer.username-empty}")
+    private String username;
+
+    @Column
+    @NotEmpty(message = "{customer.password-empty}")
+    private String password;
+
+    @Column
+    private String role;
 
     @Column(name = "name")
     @NotEmpty(message = "{customer.name-empty}")
     private String name;
 
+    @Column
+    private String birthDate;
+
     @NotEmpty(message = "{customer.cpf-null}")
     @CPF(message = "CPF Inválido")
     private String cpf;
 
-    private Integer age;
+    @Column
+    @NotEmpty(message = "{customer.phone-empty}")
+    private String phone;
+
+    @Column
+    @NotEmpty(message = "{customer.address-empty}")
+    private String address;
 
     @JsonIgnore
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-   // @NotEmptyList
-    private Set<Order> order;
+    private Set<OrderDetails> orderDetails;
 
-    public Set<Order> getOrder() {
-        return order;
-    }
-
-    public void setOrder(Set<Order> order) {
-        this.order = order;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getName() {
@@ -71,6 +89,14 @@ public class Customer {
         this.name = name;
     }
 
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
     public String getCpf() {
         return cpf;
     }
@@ -79,9 +105,27 @@ public class Customer {
         this.cpf = cpf;
     }
 
-    @Override
-    public String toString() {
-        return "Name: " + name + " - Age: " + age + " - ID = " + id;
+    public String getPhone() {
+        return phone;
+    }
 
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Set<OrderDetails> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(Set<OrderDetails> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 }

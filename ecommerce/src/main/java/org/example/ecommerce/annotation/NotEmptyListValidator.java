@@ -1,6 +1,4 @@
-package org.example.ecommerce.validation;
-
-import org.example.ecommerce.validation.NotEmptyList;
+package org.example.ecommerce.annotation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

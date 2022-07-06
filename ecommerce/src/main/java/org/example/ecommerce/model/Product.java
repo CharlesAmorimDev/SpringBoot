@@ -1,5 +1,7 @@
 package org.example.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -11,18 +13,33 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
+
     @NotEmpty(message = "{product.name-empty}")
     private String name;
+
     @NotNull(message = "{product.price-null}")
-    @Column(name = "price",precision = 20, scale = 2)
+    @Column(name = "price", precision = 20, scale = 2)
     private BigDecimal price;
 
-    public Integer getId() {
+    @Column
+    private String category;
+
+    @Column
+    private String brand;
+
+    @Column
+    private Integer amount;
+
+    @JsonIgnore
+    @ManyToOne
+    private OrderDetails orderDetails;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -40,5 +57,37 @@ public class Product {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public OrderDetails getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(OrderDetails orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 }

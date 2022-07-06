@@ -1,4 +1,4 @@
-package org.example.ecommerce.validation;
+package org.example.ecommerce.annotation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

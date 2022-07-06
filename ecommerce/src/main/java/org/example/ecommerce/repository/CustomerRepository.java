@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
+import java.util.Optional;
 
-public interface CustomerRepository extends JpaRepository<Customer, Integer> {
-
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
+/*
     List<Customer> findByNameLike(String name);
 
     @Query(value = " select c from Customer c where c.name like :name") //Query HQL
@@ -23,4 +24,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
     @Query(" select c from Customer c left join fetch c.order where c.id = :id")
     Customer findCustomertFetchOrder(@Param("id") Integer id);
+*/
+    Optional<Customer> findByUsername(String username);
+
+
 }
